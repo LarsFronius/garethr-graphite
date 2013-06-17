@@ -37,7 +37,7 @@ class graphite::config {
   exec { 'init-db':
     command   => 'python manage.py syncdb --noinput',
     cwd       => '/opt/graphite/webapp/graphite',
-    creates   => '/opt/graphite/storage/graphite.db',
+    creates   => '/var/lib/graphite/db.sqlite3',
     subscribe => File['/opt/graphite/storage'],
     require   => [File['/opt/graphite/webapp/graphite/initial_data.json'], File['/opt/graphite/webapp/graphite/local_settings.py']],
   }
