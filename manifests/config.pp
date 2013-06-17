@@ -24,6 +24,11 @@ class graphite::config {
     source    => 'puppet:///modules/graphite/storage-schemas.conf',
   }
 
+  file { '/opt/graphite/conf/storage-aggregation.conf':
+    ensure    => present,
+    source    => 'puppet:///modules/graphite/storage-aggregation.conf',
+  }
+
   file { ['/opt/graphite/storage', '/opt/graphite/storage/whisper']:
     owner     => 'www-data',
     mode      => '0775',
