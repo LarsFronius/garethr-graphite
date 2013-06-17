@@ -1,14 +1,18 @@
 require 'spec_helper'
 
 describe 'graphite', :type => :class do
-  let(:facts) { {:osfamily => 'debian'} }
+  let(:facts) { {
+    :osfamily => 'debian',
+    :operatingsystemrelease => '12.04',
+    :concat_basedir => '/var/lib/puppet/concat'
+  } }
   it { should create_class('graphite::config')}
   it { should create_class('graphite::install')}
   it { should create_class('graphite::service')}
 
   it { should contain_package('whisper')}
-  it { should contain_exec('install-graphite-web')}
-  it { should contain_exec('install-carbon')}
+  it { should contain_package('graphite-web')}
+  it { should contain_package('carbon')}
 
   it { should contain_service('carbon') }
   it { should contain_service('httpd') }

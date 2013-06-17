@@ -13,23 +13,12 @@ class graphite::install {
     'python-support',
     'python-pip',
   ]:
-    ensure => latest;
   }
 
-  exec { 'install-carbon':
-    command => 'pip install carbon',
-    creates => '/opt/graphite/lib/carbon',
-    require => Package['python-twisted'],
-  }
-
-  exec { 'install-graphite-web':
-    command => 'pip install graphite-web',
-    creates => '/opt/graphite/webapp/graphite',
-  }
-
-  package { 'whisper':
+  package { ['whisper','carbon','graphite-web']:
     ensure   => installed,
     provider => pip,
+    require  => Package['python-pip']
   }
 
   file { '/var/log/carbon':
@@ -49,5 +38,7 @@ class graphite::install {
     owner  => www-data,
     group  => www-data,
   }
+
+  class { 'apache': }
 
 }
