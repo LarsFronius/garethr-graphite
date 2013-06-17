@@ -15,10 +15,23 @@ class graphite::install {
   ]:
   }
 
-  package { ['whisper','carbon','graphite-web']:
+  #pip freeze does not show carbon and graphite-web in package list, do this to ensure it does not get installed over and over by puppet
+  exec { 'install-carbon':
+    command => 'pip install carbon',
+    creates => '/opt/graphite/lib/carbon',
+    require => Package['python-twisted','python-pip'],
+  }
+
+  exec { 'install-graphite-web':
+    command => 'pip install graphite-web',
+    creates => '/opt/graphite/webapp/graphite',
+    require => Package['python-twisted','python-pip'],
+  }
+
+  package { 'whisper':
     ensure   => installed,
     provider => pip,
-    require  => Package['python-pip']
+    require => Package['python-twisted','python-pip'],
   }
 
   file { '/var/log/carbon':
