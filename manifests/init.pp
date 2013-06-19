@@ -2,8 +2,17 @@ class graphite(
   $admin_password = $graphite::params::admin_password,
   $port = $graphite::params::port,
 ) inherits graphite::params {
-  class{'graphite::install': } ~>
+  anchor { 'graphite::begin':
+    before => Class['graphite::install'],
+    notify => Class['graphite::config']
+  }
+
+  class{'graphite::install': }
   class{'graphite::config': } ~>
-  class{'graphite::service': } ->
-  Class['graphite']
+  class{'graphite::service': }
+
+  anchor { 'graphite::end':
+    require => Class['graphite::config']
+  }
+
 }
