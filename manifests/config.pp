@@ -69,11 +69,12 @@ class graphite::config {
 
   apache::mod { 'headers': }
   apache::vhost { 'graphite':
-    priority => '10',
-    port     => $port,
-    template => 'graphite/virtualhost.conf',
-    docroot  => '/opt/graphite/webapp',
-    logroot  => '/opt/graphite/storage/log/webapp/',
+    priority           => '10',
+    port               => $port,
+    configure_firewall => false,
+    template           => 'graphite/virtualhost.conf',
+    docroot            => '/opt/graphite/webapp',
+    logroot            => '/opt/graphite/storage/log/webapp/',
   }
 
 }
